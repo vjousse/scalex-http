@@ -28,10 +28,12 @@ object ScalexHttpBuild extends Build with Resolvers with Dependencies {
       exportJars := true)
   ).foldLeft(Defaults.defaultSettings)(_ ++ _)
 
+  lazy val scalex = uri("git://github.com/ornicar/scalex#master")
+
   lazy val root = Project(id = "scalex-http", base = file("."),
     settings = buildSettings ++ Seq(
       libraryDependencies ++= Seq(playmini)
     )
-  ).settings(mainClass in (Compile, run) := Some("play.core.server.NettyServer"))
+  ).dependsOn(scalex).settings(mainClass in (Compile, run) := Some("play.core.server.NettyServer"))
 
 }
