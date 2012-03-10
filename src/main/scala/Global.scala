@@ -1,1 +1,1 @@
-object Global extends com.typesafe.play.mini.Setup(scalex.http.ScalexApp)
+object Global extends com.typesafe.play.mini.Setup(scalex.http.ScalexHttpApp)
