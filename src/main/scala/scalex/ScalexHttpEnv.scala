@@ -3,7 +3,8 @@ package scalex.http
 import scalex.search.Engine
 import scalex.db.{ IndexRepo, DefRepo }
 
-import com.mongodb.casbah._
+import com.mongodb.casbah.MongoConnection
+import com.mongodb.casbah.MongoDB
 
 class ScalexHttpEnv {
 
