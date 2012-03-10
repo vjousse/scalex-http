@@ -7,6 +7,7 @@ trait Resolvers {
 }
 
 trait Dependencies {
+  val casbah    = "com.mongodb.casbah" %% "casbah" % "2.1.5-1"
   val specs2 = "org.specs2" %% "specs2" % "1.8.1"
   val playmini  = "com.typesafe" %% "play-mini" % "2.0-RC4"
 }
@@ -32,7 +33,7 @@ object ScalexHttpBuild extends Build with Resolvers with Dependencies {
 
   lazy val root = Project(id = "scalex-http", base = file("."),
     settings = buildSettings ++ Seq(
-      libraryDependencies ++= Seq(playmini)
+      libraryDependencies ++= Seq(playmini, casbah)
     )
   ).dependsOn(scalex).settings(mainClass in (Compile, run) := Some("play.core.server.NettyServer"))
 

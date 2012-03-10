@@ -1,5 +1,4 @@
-package scalex
-package http
+package scalex.http
 
 import com.typesafe.play.mini._
 
