@@ -7,7 +7,6 @@ trait Resolvers {
 }
 
 trait Dependencies {
-  val casbah = "com.mongodb.casbah" %% "casbah" % "2.1.5-1"
   val playmini = "com.typesafe" %% "play-mini" % "2.0-RC4"
   val scalaz = "org.scalaz" %% "scalaz-core" % "6.0.4"
   val specs2 = "org.specs2" %% "specs2" % "1.8.2"
@@ -25,11 +24,11 @@ object ScalexHttpBuild extends Build with Resolvers with Dependencies {
     },
     scalacOptions := Seq("-deprecation", "-unchecked"))
 
-  //lazy val scalex = uri("git://github.com/ornicar/scalex#master")
-  lazy val scalex = uri("/home/thib/scalex")
+  lazy val scalex = uri("git://github.com/ornicar/scalex#master")
+  //lazy val scalex = uri("/home/thib/scalex")
 
   lazy val root = Project("scalex-http", file("."), settings = buildSettings).settings(
-    libraryDependencies := Seq(playmini, casbah, scalaz),
+    libraryDependencies := Seq(playmini, scalaz),
     mainClass in (Compile, run) := Some("play.core.server.NettyServer")
   ) dependsOn scalex
 
