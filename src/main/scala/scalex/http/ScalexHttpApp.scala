@@ -15,21 +15,17 @@ import scalaz._
 
 object ScalexHttpApp extends com.typesafe.play.mini.Application {
 
-  val env = new ScalexHttpEnv
-  val scalexEngine = env.scalexEngine
+  lazy val env = new ScalexHttpEnv
+  lazy val engine = env.scalexEnv.engine
 
   def route = {
 
     //Do the actual search
     case GET(Path("/")) & QueryString(qs) => Action {
-      (scalexEngine find RawQuery(qs, page(new QueryStringDecoder("?" + qs)), 15) match {
+      (engine find RawQuery(qs, page(new QueryStringDecoder("?" + qs)), 15) match {
         case Failure(e) => Ok(e)
         case Success(r) => Ok(r.defs.mkString("<br />"))
       }).as("text/html")
-    }
-
-    case GET(Path("/")) => Action {
-      Ok(<a href="https://github.com/ornicar/scalex/blob/master/http-api-documentation.md">Documentation</a>).as("text/html")
     }
 
   }
