@@ -1,17 +1,20 @@
 package scalex
 package http
 
-import scalex.model.{Def, Block}
-import com.github.ornicar.paginator.Paginator
+import scalex.model.{ Def, Block }
+import com.github.ornicar.paginator.PaginatorLike
 
 object Formatter {
 
-  def apply(query: String, paginator: Paginator[Def]): JsonObject = JsonObject(
+  def apply(
+    query: String,
+    paginator: PaginatorLike[_],
+    defs: List[Def]): JsonObject = JsonObject(
     "query" -> query,
     "nbResults" -> paginator.nbResults,
     "page" -> paginator.currentPage,
     "nbPages" -> paginator.nbPages,
-    "results" -> (paginator.currentPageResults.toList map { fun =>
+    "results" -> (defs map { fun ⇒
       JsonObject(
         "name" -> fun.name,
         "qualifiedName" -> fun.qualifiedName,
@@ -26,7 +29,7 @@ object Formatter {
           "qualifiedName" -> fun.parent.qualifiedName,
           "typeParams" -> fun.parent.showTypeParams
         ),
-        "comment" -> (fun.comment map { com =>
+        "comment" -> (fun.comment map { com ⇒
           JsonObject(
             "short" -> block(com.short),
             "body" -> block(com.body),
@@ -50,7 +53,7 @@ object Formatter {
   )
 
   private val fixKey: PartialFunction[(String, Block), (String, JsonObject)] = {
-    case (k, v) => (k.replace("_", ".") -> block(v))
+    case (k, v) ⇒ (k.replace("_", ".") -> block(v))
   }
 
   private def optionBlock(b: Option[Block]): JsonObject =
