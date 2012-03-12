@@ -2,10 +2,9 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import play.api.libs.json._
 
 import scalex.http._
-import format.Formatter
+import format._
 
 import scalex.search.{ Engine, RawQuery, Results }
 
@@ -22,19 +21,24 @@ object Application extends Controller {
   val limit = 15
   val cache = WeakHashMap[RawQuery, Result]()
 
-  def index(q: String, page: Int) = Action { request ⇒
+  def index(q: String, page: Int, callback: String) = Action { request ⇒
     val query = RawQuery(q, page, limit)
     val result = cache.getOrElseUpdate(query, search(query))
-    (result match {
-      case Failure(e) ⇒ BadRequest(e)
-      case Success(r) ⇒ Ok(r)
-    }).as("application/json")
 
-    //getSome("callback") match {
-      //case None => contentType = "application/json"; response
-      //case Some(c) => contentType = "application/javascript"; "%s(%s)" format (c, response)
-    //}
+    def jsonp(json: String) =
+      if (callback.isEmpty) json
+      else "%s(%s)" format (callback, json)
+
+    (result match {
+      case Failure(e) ⇒ BadRequest(jsonp(errorJson(e)))
+      case Success(r) ⇒ Ok(jsonp(r))
+    }) as {
+      if (callback.isEmpty) "application/json"
+      else "application/javascript"
+    }
   }
+
+  def errorJson(err: String): String = JsonObject("error" -> err) toString
 
   def search(query: RawQuery): Result = engine find query map {
     case Results(paginator, defs) ⇒ Formatter(query.string, paginator, defs) toString

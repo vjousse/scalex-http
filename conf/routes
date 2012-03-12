@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET / controllers.Application.index(q: String, page: Int ?= 1)
+GET / controllers.Application.index(q, page: Int ?= 1, callback ?= "")
 
 # Useless but play2 wants it
 GET /assets/*file controllers.Assets.at(path="/public", file)
