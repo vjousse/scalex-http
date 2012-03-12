@@ -29,6 +29,7 @@ object Formatter {
           "qualifiedName" -> fun.parent.qualifiedName,
           "typeParams" -> fun.parent.showTypeParams
         ),
+        "docUrl" -> fun.encodedDocUrl,
         "comment" -> (fun.comment map { com ⇒
           JsonObject(
             "short" -> block(com.short),
