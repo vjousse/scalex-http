@@ -1,5 +1,5 @@
-package scalex
-package http
+package scalex.http
+package format
 
 import scalex.model.{Def, Block}
 

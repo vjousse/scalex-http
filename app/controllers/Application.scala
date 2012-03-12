@@ -1,9 +1,11 @@
-package scalex.http
 package controllers
 
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+
+import scalex.http._
+import format.Formatter
 
 import scalex.search.{ Engine, RawQuery, Results }
 
@@ -27,6 +29,11 @@ object Application extends Controller {
       case Failure(e) ⇒ BadRequest(e)
       case Success(r) ⇒ Ok(r)
     }).as("application/json")
+
+    //getSome("callback") match {
+      //case None => contentType = "application/json"; response
+      //case Some(c) => contentType = "application/javascript"; "%s(%s)" format (c, response)
+    //}
   }
 
   def search(query: RawQuery): Result = engine find query map {
