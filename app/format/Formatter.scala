@@ -18,16 +18,16 @@ object Formatter {
       JsonObject(
         "name" -> fun.name,
         "qualifiedName" -> fun.qualifiedName,
-        "typeParams" -> fun.showTypeParams,
-        "resultType" -> fun.resultType,
-        "valueParams" -> fun.paramSignature,
-        "signature" -> fun.signature,
+        "typeParams" -> sugar(fun.showTypeParams),
+        "resultType" -> sugar(fun.resultType),
+        "valueParams" -> sugar(fun.paramSignature),
+        "signature" -> sugar(fun.signature),
         "package" -> fun.pack,
         "deprecation" -> (fun.deprecation map block),
         "parent" -> JsonObject(
           "name" -> fun.parent.name,
           "qualifiedName" -> fun.parent.qualifiedName,
-          "typeParams" -> fun.parent.showTypeParams
+          "typeParams" -> sugar(fun.parent.showTypeParams)
         ),
         "docUrl" -> fun.encodedDocUrl,
         "comment" -> (fun.comment map { com ⇒
@@ -62,4 +62,6 @@ object Formatter {
 
   private def block(b: Block): JsonObject =
     JsonObject("html" -> b.html, "txt" -> b.txt)
+
+  def sugar(str: Any) = str.toString.replace("=>", "⇒")
 }
